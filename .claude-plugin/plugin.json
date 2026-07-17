@@ -1,0 +1,20 @@
+{
+  "name": "yoliani-skills",
+  "version": "0.1.0",
+  "description": "Edgardo Yoliani's agent skills — remote execution with crabbox and more.",
+  "author": {
+    "name": "Edgardo Yoliani"
+  },
+  "repository": "https://github.com/Yoliani/skills",
+  "license": "MIT",
+  "keywords": [
+    "engineering",
+    "skills",
+    "crabbox",
+    "remote-execution"
+  ],
+  "skills": [
+    "./skills/engineering/crabbox-setup",
+    "./skills/engineering/crabbox-usage"
+  ]
+}
