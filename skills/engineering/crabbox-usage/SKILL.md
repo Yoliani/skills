@@ -39,9 +39,13 @@ uncommitted changes mean a full re-upload each run.
 ```sh
 crabbox warmup                           # provision and keep a box, prints slug
 crabbox run --id swift-crab -- pnpm test:changed
-crabbox ssh --id swift-crab              # interactive shell on the box
+eval "$(crabbox ssh --id swift-crab)"    # interactive shell on the box
 crabbox stop swift-crab                  # release it when done
 ```
+
+**`crabbox ssh` does not attach** — it prints the fully-quoted ssh command and
+exits 0. Wrap it in `eval "$(...)"` (or copy-paste it) to get the shell. The synced
+repo lives under `<workRoot>/<lease>/<repo>` on the box, not in `$HOME` — `cd` there.
 
 Use `--no-sync` on polling/status runs against a box where a long process is
 already going — a plain run re-syncs and can clobber in-flight work.
