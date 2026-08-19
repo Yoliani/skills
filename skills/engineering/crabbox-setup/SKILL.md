@@ -61,7 +61,7 @@ selection, sizing, sync rules, and profiles — never secrets (those live in use
 config or env vars). Minimal hand-written starting point; adapt per repo:
 
 ```yaml
-provider: <aws|hetzner|gcp|azure|daytona|static|localContainer>
+provider: <aws|hetzner|gcp|azure|daytona|static|local-container>
 target: linux            # linux | macos | windows
 class: standard          # standard | fast | large | beast
 
@@ -105,18 +105,29 @@ Add crabbox runtime artifacts to `.gitignore`: `.crabbox`, `evidence/`, `.cbx-*.
 `.cbx-*.sandbox`. Then **commit** — crabbox only skips re-uploading when the working
 tree matches `HEAD`, so uncommitted trees sync slowly every run.
 
+Sync **requires a Git workspace**: a non-Git workdir fails with diagnostics before
+the lease is even acquired, and native Jujutsu workspaces are rejected outright
+(colocated Git repos are fine). Without Git, your only path is `--no-sync`.
+
 ## Step 5 — Verify
 
 ```sh
-crabbox doctor         # validates config, broker/provider reachability, SSH keys
-crabbox sync-plan      # preview sync manifest: file count, bytes, largest files
-crabbox usage          # confirms spend tracking works (recent spend by provider)
-crabbox run -- echo ok # end-to-end smoke: lease → sync → exec → release
+crabbox doctor --provider <p>  # validates config, provider reachability, SSH keys
+crabbox sync-plan              # preview sync manifest: file count, bytes, largest files
+crabbox usage                  # confirms spend tracking works (recent spend by provider)
+crabbox run -- echo ok         # end-to-end smoke: lease → sync → exec → release
 ```
+
+**Pass the provider explicitly.** Bare `crabbox doctor` is provider-neutral: it
+reports the compiled-default provider's provenance and *skips that provider's
+credential checks*, so it can pass while proving nothing. Use `--provider <p>`
+(or run it in a repo whose `.crabbox.yaml` selects one) to actually exercise
+credentials.
 
 `sync-plan` catches sync surprises (huge untracked dirs) before the first run.
 
-`doctor` passing + the smoke run streaming `ok` back means setup is complete.
+`doctor` passing for your chosen provider + the smoke run streaming `ok` back
+means setup is complete.
 Hand off to the `crabbox-usage` skill for day-to-day workflows.
 
 ## Gotchas
@@ -139,7 +150,9 @@ Hand off to the `crabbox-usage` skill for day-to-day workflows.
   nothing else. Language runtimes, Docker, and dependencies are *project* setup:
   use Actions hydration (`crabbox init` scaffolds the workflow; `crabbox prewarm`
   runs it), devcontainers, Nix, or mise/asdf. Don't expect node/python on a fresh
-  lease.
+  lease. To *check* what's there before a run, use preflight probes —
+  `run.preflightTools` in config or `crabbox run --preflight --preflight-tools
+  python,python3`. Probes only report availability; they never install anything.
 - Per-lease SSH keys are generated locally under
   `<user-config>/crabbox/testboxes/<lease-id>/id_ed25519`; the broker never sees
   private keys, and command I/O streams directly CLI↔box (broker is control
