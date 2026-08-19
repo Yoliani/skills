@@ -1,0 +1,12 @@
+This skill is derived from the "sentry" skill in https://github.com/mitsuhiko/agent-stuff
+Copyright Armin Ronacher, licensed under the Apache License, Version 2.0.
+You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+
+Modifications in this repository:
+- Base URL is configurable (~/.sentryclirc [defaults] url, SENTRY_URL, --url),
+  so the scripts also work against GlitchTip and other Sentry-compatible servers.
+- Backend detection (sentry vs glitchtip) with per-backend request building for
+  issue listing and log search, and a clear refusal for Discover-only features.
+- Added scripts/check-config.js; org/project defaults read from the rc file.
+- A .sentryclirc in the working directory is layered over ~/.sentryclirc,
+  matching sentry-cli's own config lookup.

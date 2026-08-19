@@ -47,6 +47,8 @@ Skills for daily code work.
 - **[agents-md](./skills/engineering/agents-md/SKILL.md)** — Write, audit, or rewrite `AGENTS.md` files so they carry only what an agent can't infer from the repo.
 - **[loop-design](./skills/engineering/loop-design/SKILL.md)** — Design the task DAG a work loop will walk: turn a spec, plan, or issue list into a `.agent-loop/<effort>/` directory with tasks, dependencies, topology decision, and durable shared state files.
 - **[loop-operate](./skills/engineering/loop-operate/SKILL.md)** — Run the work loop over an existing `.agent-loop/` task DAG: claim ready tasks, execute, verify, update shared state, and react to runtime reorg triggers.
+- **[watching-videos](./skills/engineering/watching-videos/SKILL.md)** — Watch a video the agent can't play (local file or link) by extracting frames and a transcript with ffmpeg — summarize it, pull moments out, or reproduce a recorded bug.
+- **[sentry](./skills/engineering/sentry/SKILL.md)** — Fetch and analyze issues, events, and logs from Sentry or a GlitchTip instance at any custom URL: stack traces, breadcrumbs, recent errors, log search.
 - **[why](./skills/engineering/why/SKILL.md)** — Code archaeology: recover the design rationale behind code by fanning investigators out across every available evidence source (source control, tickets, docs, chat, observability, error tracking, analytics) and returning a cited, confidence-calibrated read.
 
 ### Productivity
@@ -61,6 +63,7 @@ General workflow tools, not code-specific.
 Tied to my own setup and voice.
 
 - **[unslop](./skills/personal/unslop/SKILL.md)** — Remove AI tells from prose and restore human voice, preserving meaning and intended tone.
+- **[writing-style](./skills/personal/writing-style/SKILL.md)** — Full prose style for anything read as writing: docs, READMEs, PR descriptions, posts, emails, long design answers.
 - **[pixel-art-creator](./skills/personal/pixel-art-creator/SKILL.md)** — Create new pixel art sprites from scratch: canvas, layers, and basic drawing primitives.
 - **[pixel-art-animator](./skills/personal/pixel-art-animator/SKILL.md)** — Build sprite animations with frames, animation tags, and onion skinning.
 - **[pixel-art-professional](./skills/personal/pixel-art-professional/SKILL.md)** — Apply advanced techniques: dithering, palette optimization, anti-aliasing, outlining.
