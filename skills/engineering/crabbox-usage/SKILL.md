@@ -40,10 +40,25 @@ crabbox run -- pnpm test                 # lease → sync → exec → release
 crabbox run --keep -- pnpm build         # keep the lease alive after the run
 crabbox run --no-sync -- <cmd>           # reuse the box's tree as-is (no re-sync)
 crabbox run --provider aws --class beast -- pnpm test   # per-run overrides
+crabbox run --preflight -- pnpm test     # report remote tool availability first
+crabbox run --script ./ci/check.sh       # upload + run a standalone script
+crabbox run --emit-proof proof.md -- pnpm test   # signed receipt (→ crabbox verify)
 ```
 
 **Commit before running** — sync is skipped when the tree matches `HEAD`, so
-uncommitted changes mean a full re-upload each run.
+uncommitted changes mean a full re-upload each run. Sync also **requires a Git
+workspace**: non-Git workdirs fail before the lease is acquired, and native
+Jujutsu workspaces are rejected (colocated Git is fine). `--no-sync` is the only
+escape.
+
+`--preflight` probes only *report* what's installed — they never install anything.
+Pick probes with `--preflight-tools python,python3` or `run.preflightTools` in
+config; `default` keeps the built-ins, `none` disables them.
+
+`--script` uploads a **content-hashed standalone copy** under `.crabbox/scripts/`
+on POSIX SSH leases, so `$0` points there, not into the repo. A script that reads
+adjacent repo files must be invoked by its synced path instead
+(`crabbox run -- ./ci/check.sh`).
 
 ## Warm box loop (repeated runs)
 
@@ -66,6 +81,10 @@ UI-capable boxes: `crabbox warmup --desktop --browser --code`, then
 Use `--no-sync` on polling/status runs against a box where a long process is
 already going — a plain run re-syncs and can clobber in-flight work.
 
+`--id` self-routes: `run`, `watch`, `status`, and `inspect` resolve the provider
+from the local lease claim before the configured one, so reusing a box from a
+different provider needs no `--provider` flag (an explicit one still wins).
+
 ## Inspecting & connecting
 
 ```sh
@@ -84,15 +103,24 @@ crabbox results <run-id>         # parsed JUnit summaries
 ```sh
 crabbox artifacts collect|pull|list|publish  # QA artifacts (screenshots, video, JUnit)
 crabbox sync-plan            # preview what a sync would transfer (size hotspots)
-crabbox cp <src> <dst>       # delegated sandboxes ONLY — for SSH boxes use
-                             # scp/rsync built from `crabbox ssh` output
-crabbox verify               # verify a signed run receipt
+crabbox cp <src> <dst>       # bidirectional copy over SSH leases and delegated
+                             # sandboxes
+crabbox verify               # verify a receipt from run --emit-proof
 ```
+
+`cp` over SSH falls back to a checksummed, validated archive transfer when the
+*local* rsync is missing or older than 3.4.3 (stock macOS OpenRsync qualifies).
+The fallback covers POSIX operator hosts talking to native Linux or macOS leases
+— not WSL2.
+
+Run proofs record stdout/stderr capture paths and byte counts; they never embed
+the captured output itself.
 
 ## Networking, desktop, browser
 
 ```sh
 crabbox ports                # publish/list/unpublish provider-native ports
+crabbox tunnel               # readiness-gated, loopback-only port tunnel
 crabbox egress               # bridge lease browser/app traffic through this machine
 crabbox screenshot           # capture a PNG from a desktop lease
 crabbox vnc --open | webvnc  # (web) VNC into the box's desktop
@@ -131,7 +159,7 @@ forgotten boxes keep billing.
 
 - **SSH-lease providers** (Hetzner/AWS/Azure/GCP, static): full command surface —
   `ports`, `screenshot`, `vnc`, artifact globs all work; no exec time cap. File
-  copy: scp/rsync using the connection `crabbox ssh` prints (`cp` is not for these).
+  copy: `crabbox cp` (or scp/rsync via the connection `crabbox ssh` prints).
 - **Delegated sandboxes (Daytona)**: minimal surface — essentially only
   `warmup`/`run`/`ssh`/`cp`/`stop`; no `ports` or preview URLs, and each
   `crabbox run` exec is capped at ~60s. Long setups must be backgrounded on the

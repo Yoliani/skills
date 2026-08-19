@@ -31,6 +31,10 @@ _Avoid_: project, plan, job
 The dependency graph of tasks inside an effort. A task is **ready** when all its blocking edges are resolved; operators claim ready tasks.
 _Avoid_: task list, todo list, backlog
 
+**Backend** (error tracking):
+Which server the `sentry` skill talks to — `sentry` (Sentry SaaS or self-hosted) or `glitchtip`. Detected from the configured URL, overridable with `--backend`. Feature availability differs per backend.
+_Avoid_: provider, instance, server (when the backend kind is meant)
+
 ## Relationships
 
 - A **Bucket** holds many **Skills**; a **Skill** may be a **Promoted skill**
