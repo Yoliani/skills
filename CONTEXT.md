@@ -35,6 +35,10 @@ _Avoid_: task list, todo list, backlog
 Which server the `sentry` skill talks to — `sentry` (Sentry SaaS or self-hosted) or `glitchtip`. Detected from the configured URL, overridable with `--backend`. Feature availability differs per backend.
 _Avoid_: provider, instance, server (when the backend kind is meant)
 
+**Search provider**:
+Which upstream the `native-web-search` skill queries — `openai-codex`, `anthropic`, `exa`, or `nan`. The first two return a written summary from a fast model with native web search; `exa` and `nan` return ranked results over plain HTTP. Selected with `--provider`.
+_Avoid_: engine, backend (which the `sentry` skill reserves for error-tracking servers)
+
 ## Relationships
 
 - A **Bucket** holds many **Skills**; a **Skill** may be a **Promoted skill**
@@ -46,3 +50,4 @@ _Avoid_: provider, instance, server (when the backend kind is meant)
 
 - "plugin" vs "marketplace" — resolved: the **plugin** is `yoliani-skills` (defined in `.claude-plugin/plugin.json`); the **marketplace** is the repo itself (`.claude-plugin/marketplace.json`), which lists that one plugin.
 - "loop" was used for both the design artifact and the act of running it — resolved: the artifact is the **Effort** (with its **Task DAG**); "the loop" refers only to `loop-operate`'s claim–execute–verify cycle.
+- "provider" meant two things — resolved: a **Search provider** is a `native-web-search` upstream; the error-tracking server the `sentry` skill talks to is a **Backend**, never a provider.
