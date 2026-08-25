@@ -5,14 +5,15 @@ description: >
   SSH/attach, file copy, artifacts, port forwarding, screenshots/VNC, and cost
   hygiene. Use when the user says "run this on crabbox", "run tests remotely",
   "warm up a box", "ssh into the box", "pull artifacts off the box", or any
-  crabbox command question. If crabbox is missing or unauthenticated, run the
-  crabbox-setup skill first.
+  crabbox command question. If crabbox is missing or unauthenticated, call the
+  Skill tool with `crabbox-setup` first.
 user_invocable: true
 ---
 
 # crabbox-usage — run work on remote boxes
 
-Prerequisite: `crabbox doctor` passes (otherwise → `crabbox-setup` skill).
+Prerequisite: `crabbox doctor` passes (otherwise → call the Skill tool with
+`crabbox-setup`).
 Full command reference: https://crabbox.sh/cli.html (architecture: /architecture.html,
 broker/teams: /orchestrator.html)
 

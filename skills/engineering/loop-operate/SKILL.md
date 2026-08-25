@@ -4,15 +4,15 @@ description: >
   Run the work loop over an existing `.agent-loop/<effort>/` task DAG: claim
   ready tasks, execute, verify, update shared state, and react to runtime
   reorg triggers. Use when the user asks to run, work, or continue a loop or
-  graph, to keep looping, or to claim ready tasks. If no graph exists, run
-  the loop-design skill first.
+  graph, to keep looping, or to claim ready tasks. If no graph exists, call
+  the Skill tool with `loop-design` first.
 user_invocable: true
 ---
 
 # loop-operate — run the work loop over the task DAG
 
-Prerequisite: `.agent-loop/<effort-slug>/` exists (otherwise →
-`loop-design` skill). The graph outlives sessions; a session is just one
+Prerequisite: `.agent-loop/<effort-slug>/` exists (otherwise → call the Skill
+tool with `loop-design`). The graph outlives sessions; a session is just one
 pass of the loop that claims work, does it, and leaves the state better
 documented.
 
@@ -73,11 +73,11 @@ surface, the acceptance line, and "run the loop-operate loop".
 Coordinator merges results, updates the graph, and owns the trigger table —
 workers report, the coordinator reorganizes.
 
-**Orca worktrees** (parallel work touching overlapping infra): spawn one
-worktree agent per ready task via the orca-cli skill so each works an isolated
-copy; merge branches sequentially on completion. The shared `.agent-loop/`
-state lives on the main branch — coordinator applies graph updates there on
-each merge.
+**Orca worktrees** (parallel work touching overlapping infra): call the Skill
+tool with `orca-cli` and spawn one worktree agent per ready task so each works
+an isolated copy; merge branches sequentially on completion. The shared
+`.agent-loop/` state lives on the main branch — coordinator applies graph
+updates there on each merge.
 
 ## Finishing an effort
 

@@ -158,7 +158,7 @@ For Indexed color mode, set the palette first:
    - Describe what was created to user
 
 7. **Prepare for Export** (if requested)
-   - Hand off to pixel-art-exporter Skill
+   - Call the Skill tool with `pixel-art-exporter`
 
 ## Examples
 
@@ -252,9 +252,9 @@ For icon requests:
 
 ## Integration with Other Skills
 
-- **Hand off to pixel-art-animator** when user mentions "animation", "frames", or "movement"
-- **Hand off to pixel-art-professional** when user asks for "dithering", "shading", or "palette refinement"
-- **Hand off to pixel-art-exporter** when user asks to "export", "save", or mentions file formats
+- **Call the Skill tool with `pixel-art-animator`** when user mentions "animation", "frames", or "movement"
+- **Call the Skill tool with `pixel-art-professional`** when user asks for "dithering", "shading", or "palette refinement"
+- **Call the Skill tool with `pixel-art-exporter`** when user asks to "export", "save", or mentions file formats
 
 ## Error Handling
 
