@@ -3,6 +3,7 @@ Skills are organized into bucket folders under `skills/`:
 - `engineering/` — daily code work
 - `productivity/` — daily non-code workflow tools
 - `personal/` — tied to my own setup, not promoted
+- `archive/`: retired skills, kept for reference, not promoted, not shipped, not listed in the `README.md`
 
 This repo maintains **one README only**: the top-level `README.md`. Bucket folders do not have their own `README.md`. Every skill in `engineering/` or `productivity/` (the **promoted** buckets) must have an entry in the top-level `README.md`, grouped under its bucket heading, with the skill name linked to its `SKILL.md` and a one-line description. Skills in `personal/` are listed under the Personal heading of the same `README.md`.
 
