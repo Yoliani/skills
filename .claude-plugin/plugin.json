@@ -14,19 +14,15 @@
     "remote-execution"
   ],
   "skills": [
-    "./skills/engineering/agents-md",
     "./skills/engineering/crabbox-setup",
     "./skills/engineering/crabbox-usage",
     "./skills/engineering/herdr-relay",
-    "./skills/engineering/loop-design",
-    "./skills/engineering/loop-operate",
     "./skills/engineering/native-web-search",
     "./skills/engineering/plane",
     "./skills/engineering/sentry",
     "./skills/engineering/watching-videos",
     "./skills/engineering/web-browser",
     "./skills/engineering/why",
-    "./skills/productivity/hyperplan",
     "./skills/productivity/show-me-your-work"
   ]
 }

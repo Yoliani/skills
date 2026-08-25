@@ -44,9 +44,6 @@ Skills for daily code work.
 
 - **[crabbox-setup](./skills/engineering/crabbox-setup/SKILL.md)** — Install and configure [crabbox](https://crabbox.sh), the remote execution control plane that leases cloud machines, syncs your repo, and runs commands remotely. Covers CLI install, broker login, doctor checks, and scaffolding a repo-local `.crabbox.yaml`.
 - **[crabbox-usage](./skills/engineering/crabbox-usage/SKILL.md)** — Day-to-day crabbox workflows: one-shot remote runs, warm boxes for repeated runs, SSH/attach, file copy, artifacts, port forwarding, screenshots/VNC, and cost hygiene.
-- **[agents-md](./skills/engineering/agents-md/SKILL.md)** — Write, audit, or rewrite `AGENTS.md` files so they carry only what an agent can't infer from the repo.
-- **[loop-design](./skills/engineering/loop-design/SKILL.md)** — Design the task DAG a work loop will walk: turn a spec, plan, or issue list into a `.agent-loop/<effort>/` directory with tasks, dependencies, topology decision, and durable shared state files.
-- **[loop-operate](./skills/engineering/loop-operate/SKILL.md)** — Run the work loop over an existing `.agent-loop/` task DAG: claim ready tasks, execute, verify, update shared state, and react to runtime reorg triggers.
 - **[watching-videos](./skills/engineering/watching-videos/SKILL.md)** — Watch a video the agent can't play (local file or link) by extracting frames and a transcript with ffmpeg — summarize it, pull moments out, or reproduce a recorded bug.
 - **[sentry](./skills/engineering/sentry/SKILL.md)** — Fetch and analyze issues, events, and logs from Sentry or a GlitchTip instance at any custom URL: stack traces, breadcrumbs, recent errors, log search.
 - **[plane](./skills/engineering/plane/SKILL.md)**: Read and write work items in Plane (cloud or self-hosted): list and search, read one with comments and activity, file new ones, move states, and comment.
@@ -59,7 +56,6 @@ Skills for daily code work.
 
 General workflow tools, not code-specific.
 
-- **[hyperplan](./skills/productivity/hyperplan/SKILL.md)** — Interrogate a task's requirements until every assumption is explicit, then generate an implementation-ready plan for a build agent.
 - **[show-me-your-work](./skills/productivity/show-me-your-work/SKILL.md)** — Keep a reviewable decision trail for long-running or unattended work: a TSV log with one row per decision (what, why, evidence, result).
 
 ### Personal
