@@ -40,7 +40,7 @@ Which upstream the `native-web-search` skill queries — `openai-codex`, `anthro
 _Avoid_: engine, backend (which the `sentry` skill reserves for error-tracking servers)
 
 **Work item**:
-A ticket in Plane — what its UI and API v1 call an issue's successor. The `plane` skill addresses one by `PROJ-123` identifier, UUID, or browser URL, and never uses the deprecated `/issues/` API paths.
+A ticket in Plane, what its UI and API v1 call an issue's successor. The `plane` skill addresses one by `PROJ-123` identifier, UUID, or browser URL, and never uses the deprecated `/issues/` API paths.
 _Avoid_: issue, ticket, task (when the Plane record is meant)
 
 **Relay**:

@@ -25,7 +25,7 @@ Options:
   --url <url>              Server root URL
   -h, --help               Show this help
 
-The plain search returns identifiers and names only — feed a hit to
+The plain search returns identifiers and names only, so feed a hit to
 get-work-item.js for the full record. --filter values are passed through to
 Plane's issue filter set untouched; unknown keys come back as a 400.
 

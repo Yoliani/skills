@@ -76,7 +76,7 @@ workers report, the coordinator reorganizes.
 **Orca worktrees** (parallel work touching overlapping infra): call the Skill
 tool with `orca-cli` and spawn one worktree agent per ready task so each works
 an isolated copy; merge branches sequentially on completion. The shared
-`.agent-loop/` state lives on the main branch — coordinator applies graph
+`.agent-loop/` state lives on the main branch; the coordinator applies graph
 updates there on each merge.
 
 ## Finishing an effort

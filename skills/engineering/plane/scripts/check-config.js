@@ -48,7 +48,7 @@ run(async () => {
   console.log("");
 
   if (!workspace) {
-    console.log("Set a workspace to verify the key — the API has no workspace-less endpoint.");
+    console.log("Set a workspace to verify the key; the API has no workspace-less endpoint.");
     console.log("Add it to ~/.planesorc [defaults], or pass --workspace <slug>.");
     return;
   }
@@ -56,6 +56,6 @@ run(async () => {
   const projects = await paginate(`/workspaces/${encodeURIComponent(workspace)}/projects/`);
   console.log(`Auth OK. ${projects.length} project(s) visible in '${workspace}':`);
   for (const project of projects) {
-    console.log(`  - ${project.identifier} — ${project.name} (${project.id})`);
+    console.log(`  - ${project.identifier}: ${project.name} (${project.id})`);
   }
 });

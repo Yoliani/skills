@@ -13,7 +13,7 @@ import {
 
 const HELP = `Usage: list-metadata.js [options]
 
-List the states, labels, members, cycles, and modules of a project — the
+List the states, labels, members, cycles, and modules of a project: the
 vocabulary the other scripts accept by name, alongside their UUIDs.
 
 Options:
@@ -70,11 +70,11 @@ run(async () => {
     } else {
       for (const entry of entries) {
         if (kind === "members") {
-          console.log(`  ${memberName(entry)} — ${memberId(entry)} (${entry.role ?? "?"})`);
+          console.log(`  ${memberName(entry)}: ${memberId(entry)} (${entry.role ?? "?"})`);
         } else if (kind === "states") {
-          console.log(`  ${entry.name} [${entry.group}] — ${entry.id}`);
+          console.log(`  ${entry.name} [${entry.group}]: ${entry.id}`);
         } else {
-          console.log(`  ${entry.name} — ${entry.id}`);
+          console.log(`  ${entry.name}: ${entry.id}`);
         }
       }
     }

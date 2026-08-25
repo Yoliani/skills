@@ -161,7 +161,7 @@ export function requireWorkspace(explicit) {
 }
 
 /**
- * Call the API. Paths are relative to /api/v1 and must end with a slash —
+ * Call the API. Paths are relative to /api/v1 and must end with a slash:
  * Plane redirects slashless paths and drops the method on the way.
  * @param {string} path - e.g. "/workspaces/acme/projects/"
  * @param {{method?: string, query?: Record<string, any>, body?: any}} [options]

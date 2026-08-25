@@ -125,5 +125,5 @@ attributable to the plan they ran under.
 - Name the **critical path** (longest blocking chain) in decisions.md — it is
   the effort's minimum completion time and where escalation money goes first.
 
-Then hand off: "graph ready at `.agent-loop/<slug>/`" — to work it, call the
+Then hand off: "graph ready at `.agent-loop/<slug>/`". To work it, call the
 Skill tool with `loop-operate`.

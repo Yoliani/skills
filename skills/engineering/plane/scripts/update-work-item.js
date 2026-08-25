@@ -81,7 +81,7 @@ run(async () => {
 
   const payload = await buildPayload(workspace, projectId, flags);
   if (Object.keys(payload).length === 0 && !flags.cycle && !flags.module) {
-    die("nothing to update — pass at least one field", "Run with --help for the field list.");
+    die("nothing to update, pass at least one field", "Run with --help for the field list.");
   }
 
   const item =

@@ -1,6 +1,6 @@
 ---
 name: plane
-description: Read and write work items in Plane (plane.so cloud or a self-hosted instance) over the REST API — list and search work items, read one with comments and activity, create, update, move states, and comment. Use when picking up a ticket, checking what's assigned, filing an issue found while coding, or updating a work item after shipping.
+description: Read and write work items in Plane (plane.so cloud or a self-hosted instance) over the REST API: list and search work items, read one with comments and activity, create, update, move states, and comment. Use when picking up a ticket, checking what's assigned, filing an issue found while coding, or updating a work item after shipping.
 ---
 
 # Plane
@@ -22,12 +22,12 @@ workspace=acme
 project=WEB
 ```
 
-- `api_key` — from *Profile settings → Personal access tokens* in the Plane UI.
-- `url` — server root. Omit it for Plane Cloud (`https://api.plane.so`). For a
+- `api_key`: from *Profile settings → Personal access tokens* in the Plane UI.
+- `url`: server root. Omit it for Plane Cloud (`https://api.plane.so`). For a
   self-hosted instance, use the host you open in the browser; `/api/v1` is
   appended.
-- `workspace` — the slug in the UI URL: `https://app.plane.so/<workspace>/`.
-- `project` — a project identifier (`WEB`), name, or UUID, used whenever
+- `workspace`: the slug in the UI URL: `https://app.plane.so/<workspace>/`.
+- `project`: a project identifier (`WEB`), name, or UUID, used whenever
   `--project` is omitted.
 
 Overrides, highest priority first: CLI flags → environment → rc file.
@@ -35,11 +35,11 @@ Overrides, highest priority first: CLI flags → environment → rc file.
 | Setting | Flag | Env | rc key |
 |---------|------|-----|--------|
 | Server root | `--url` | `PLANE_URL` | `[defaults] url` |
-| API key | — | `PLANE_API_KEY` | `[auth] api_key` |
+| API key | n/a | `PLANE_API_KEY` | `[auth] api_key` |
 | Workspace | `--workspace` | `PLANE_WORKSPACE` | `[defaults] workspace` |
-| Project | `--project` | — | `[defaults] project` |
-| Web UI root | — | `PLANE_WEB_URL` | `[defaults] web_url` |
-| rc file path | `--rc` | `PLANE_RC` | — |
+| Project | `--project` | n/a | `[defaults] project` |
+| Web UI root | n/a | `PLANE_WEB_URL` | `[defaults] web_url` |
+| rc file path | `--rc` | `PLANE_RC` | n/a |
 
 **Two rc files.** `~/.planesorc` is the base and a `.planesorc` in the working
 directory layers on top, key by key: a repo can set `workspace`/`project` while
@@ -47,7 +47,7 @@ the key keeps coming from the home file. Pass `--rc <path>` (or `PLANE_RC`) to
 skip that search and read one file only. `check-config.js` prints which files
 were merged.
 
-A repo-local `.planesorc` sits in the working tree — keep the key in the home
+A repo-local `.planesorc` sits in the working tree, so keep the key in the home
 file, or make sure the local one is gitignored before writing one.
 
 **Web links.** Plane Cloud serves the API from `api.plane.so` and the UI from
@@ -55,7 +55,7 @@ file, or make sure the local one is gitignored before writing one.
 self-hosted instance usually serves both from one host, which is the default
 there; override with `web_url` if it doesn't.
 
-Start with `./scripts/check-config.js` — it prints the resolved URL, workspace,
+Start with `./scripts/check-config.js`, which prints the resolved URL, workspace,
 and key prefix, then verifies the key by listing the workspace's projects. Run
 it first whenever a call fails with a 401 or 404.
 
@@ -79,10 +79,10 @@ All scripts take `--json` for raw output and `-h` for full usage.
 
 Every script takes human names where the API takes UUIDs, and resolves them:
 
-- **Projects** — identifier (`WEB`), name (`Website`), or UUID.
-- **Work items** — `WEB-123`, a UUID, or a URL pasted from the browser.
-- **States, labels, cycles, modules** — by name, case-insensitive.
-- **Assignees** — email or display name.
+- **Projects**: identifier (`WEB`), name (`Website`), or UUID.
+- **Work items**: `WEB-123`, a UUID, or a URL pasted from the browser.
+- **States, labels, cycles, modules**: by name, case-insensitive.
+- **Assignees**: email or display name.
 
 Resolution costs an extra call or two and fails loudly with the list of valid
 values. When a name is rejected, `list-metadata.js -p <project>` prints the
@@ -104,7 +104,7 @@ project's whole vocabulary alongside the UUIDs.
 ```
 
 State **groups** (`backlog`, `unstarted`, `started`, `completed`, `cancelled`)
-are the stable way to ask this — state *names* are per-project and get renamed.
+are the stable way to ask this; state *names* are per-project and get renamed.
 
 ### "Show me this ticket"
 
@@ -114,7 +114,7 @@ are the stable way to ask this — state *names* are per-project and get renamed
 ./scripts/get-work-item.js https://app.plane.so/acme/projects/<uuid>/issues/<uuid>
 ```
 
-`--activity` is the field-by-field history — who changed the state, when the
+`--activity` is the field-by-field history: who changed the state, when the
 priority was raised. Usually the fastest way to reconstruct how a ticket got
 into its current shape.
 
@@ -159,7 +159,7 @@ git log -1 --format=%B | ./scripts/comment-work-item.js WEB-123 -f -
   `list-work-items.js` fetches pages and filters them locally. It only searches
   what it fetched: if a filter looks suspiciously empty on a big project, raise
   `--limit` before believing the result. `--cycle` and `--module` are the
-  exception — those are separate endpoints and filter server-side.
+  exception, since those are separate endpoints and filter server-side.
 - **Rate limit: 60 requests per minute per key.** Name resolution and `--assignee`
   filtering spend calls, so a wide sweep over several projects can hit it. A 429
   is reported with the seconds left until reset.

@@ -119,7 +119,7 @@ run(async () => {
         entry.field
           ? `${entry.field}: ${entry.old_value || "∅"} → ${entry.new_value || "∅"}`
           : entry.verb || "";
-      console.log(`  [${formatTimestamp(entry.created_at)}] ${who} — ${change}`);
+      console.log(`  [${formatTimestamp(entry.created_at)}] ${who}: ${change}`);
     }
   }
 });
