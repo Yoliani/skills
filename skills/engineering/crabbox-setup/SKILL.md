@@ -128,7 +128,7 @@ credentials.
 
 `doctor` passing for your chosen provider + the smoke run streaming `ok` back
 means setup is complete.
-Hand off to the `crabbox-usage` skill for day-to-day workflows.
+For day-to-day workflows, call the Skill tool with `crabbox-usage`.
 
 ## Gotchas
 

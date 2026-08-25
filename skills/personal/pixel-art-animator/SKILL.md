@@ -291,9 +291,9 @@ Use `mcp__aseprite__link_cel`:
 
 ## Integration with Other Skills
 
-- **Start with pixel-art-creator** to create base sprite before animating
-- **Use pixel-art-professional** for polish (shading, antialiasing) after animation
-- **Hand off to pixel-art-exporter** when user wants to export spritesheet or GIF
+- **Call the Skill tool with `pixel-art-creator`** first to create base sprite before animating
+- **Call the Skill tool with `pixel-art-professional`** for polish (shading, antialiasing) after animation
+- **Call the Skill tool with `pixel-art-exporter`** when user wants to export spritesheet or GIF
 
 ## Error Handling
 

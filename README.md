@@ -49,9 +49,11 @@ Skills for daily code work.
 - **[loop-operate](./skills/engineering/loop-operate/SKILL.md)** — Run the work loop over an existing `.agent-loop/` task DAG: claim ready tasks, execute, verify, update shared state, and react to runtime reorg triggers.
 - **[watching-videos](./skills/engineering/watching-videos/SKILL.md)** — Watch a video the agent can't play (local file or link) by extracting frames and a transcript with ffmpeg — summarize it, pull moments out, or reproduce a recorded bug.
 - **[sentry](./skills/engineering/sentry/SKILL.md)** — Fetch and analyze issues, events, and logs from Sentry or a GlitchTip instance at any custom URL: stack traces, breadcrumbs, recent errors, log search.
+- **[plane](./skills/engineering/plane/SKILL.md)**: Read and write work items in Plane (cloud or self-hosted): list and search, read one with comments and activity, file new ones, move states, and comment.
 - **[native-web-search](./skills/engineering/native-web-search/SKILL.md)** — Run a web search from the shell: a written research summary from a fast model with native search, or ranked results from Exa or NaN, always with full source URLs.
 - **[web-browser](./skills/engineering/web-browser/SKILL.md)** — Drive real Chrome over the DevTools Protocol: navigate, evaluate JS, screenshot, emulate mobile devices, dismiss cookie banners, and tail console/network logs.
 - **[why](./skills/engineering/why/SKILL.md)** — Code archaeology: recover the design rationale behind code by fanning investigators out across every available evidence source (source control, tickets, docs, chat, observability, error tracking, analytics) and returning a cited, confidence-calibrated read.
+- **[herdr-relay](./skills/engineering/herdr-relay/SKILL.md)**: Orchestrate a task across Herdr agents: map the fog with the user, hand a brief to an implementer (`pi`, or `amp` on request), and have a separate `pi` review the choices and the implementation until the review comes back clean.
 
 ### Productivity
 

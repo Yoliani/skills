@@ -350,9 +350,9 @@ For "smooth out the colors" requests:
 
 ## Integration with Other Skills
 
-- **Start with pixel-art-creator** for base sprite before polishing
-- **Use pixel-art-animator** for animation, then polish with this Skill
-- **Hand off to pixel-art-exporter** when refinement is complete
+- **Call the Skill tool with `pixel-art-creator`** first for base sprite before polishing
+- **Call the Skill tool with `pixel-art-animator`** for animation, then polish with this Skill
+- **Call the Skill tool with `pixel-art-exporter`** when refinement is complete
 
 ## Error Handling
 

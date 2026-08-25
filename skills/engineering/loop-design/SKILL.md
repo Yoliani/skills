@@ -39,8 +39,8 @@ Challenge vague answers instead of accepting them ("fast" → how fast, measured
 how?). When confident (~95%), write the result to
 `.agent-loop/<effort-slug>/spec.md` and get the user's sign-off before
 graphing — the spec is the artifact the graph is judged against. If a
-dedicated grilling/spec skill is available in the harness, invoking it is an
-equally good way to run this step.
+dedicated grilling/spec skill is available in the harness, calling the Skill
+tool with it is an equally good way to run this step.
 
 ## Step 2 — interview only for the gaps
 
@@ -125,5 +125,5 @@ attributable to the plan they ran under.
 - Name the **critical path** (longest blocking chain) in decisions.md — it is
   the effort's minimum completion time and where escalation money goes first.
 
-Then hand off: "graph ready at `.agent-loop/<slug>/` — run the
-`loop-operate` skill to work it."
+Then hand off: "graph ready at `.agent-loop/<slug>/`". To work it, call the
+Skill tool with `loop-operate`.
