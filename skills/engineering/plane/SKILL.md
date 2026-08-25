@@ -1,6 +1,6 @@
 ---
 name: plane
-description: Read and write work items in Plane (plane.so cloud or a self-hosted instance) over the REST API: list and search work items, read one with comments and activity, create, update, move states, and comment. Use when picking up a ticket, checking what's assigned, filing an issue found while coding, or updating a work item after shipping.
+description: "Read and write work items in Plane (plane.so cloud or a self-hosted instance) over the REST API: list and search work items, read one with comments and activity, create, update, move states, and comment. Use when picking up a ticket, checking what's assigned, filing an issue found while coding, or updating a work item after shipping."
 ---
 
 # Plane

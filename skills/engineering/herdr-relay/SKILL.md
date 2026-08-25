@@ -1,6 +1,6 @@
 ---
 name: herdr-relay
-description: Orchestrate a task across Herdr agents: map the fog, hand the work to an implementer, have pi review the choices and the implementation.
+description: "Orchestrate a task across Herdr agents: map the fog, hand the work to an implementer, have pi review the choices and the implementation."
 disable-model-invocation: true
 ---
 
