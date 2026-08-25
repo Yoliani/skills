@@ -39,12 +39,25 @@ _Avoid_: provider, instance, server (when the backend kind is meant)
 Which upstream the `native-web-search` skill queries — `openai-codex`, `anthropic`, `exa`, or `nan`. The first two return a written summary from a fast model with native web search; `exa` and `nan` return ranked results over plain HTTP. Selected with `--provider`.
 _Avoid_: engine, backend (which the `sentry` skill reserves for error-tracking servers)
 
+**Work item**:
+A ticket in Plane — what its UI and API v1 call an issue's successor. The `plane` skill addresses one by `PROJ-123` identifier, UUID, or browser URL, and never uses the deprecated `/issues/` API paths.
+_Avoid_: issue, ticket, task (when the Plane record is meant)
+
+**Relay**:
+One `herdr-relay` run: map the fog → dispatch an implementer → review with `pi` → re-audit. The **orchestrator** never edits files; the **implementer** (`pi`, or `amp` when named) writes the code; the **reviewer** (always a separate `pi` instance) reviews the choices and the implementation.
+_Avoid_: pipeline, handoff, delegation
+
+**Brief**:
+The single artifact the orchestrator hands the implementer at the end of fog-mapping: what to build, the scope boundary, the constraints found in the code, and the decisions the user made. A question left unanswered in the brief is unmapped fog.
+_Avoid_: spec, plan, prompt
+
 ## Relationships
 
 - A **Bucket** holds many **Skills**; a **Skill** may be a **Promoted skill**
 - A **Harness** loads **Skills** (via plugin install or symlink)
 - An **Effort** holds one **Task DAG**; `loop-operate` claims ready tasks from it
 - crabbox skills lease and reuse **Boxes**; other skills may run commands on them
+- A **Relay** carries one **Brief** from the orchestrator to the implementer; the reviewer reads both
 
 ## Flagged ambiguities
 
