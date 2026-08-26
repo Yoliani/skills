@@ -43,6 +43,18 @@ _Avoid_: engine, backend (which the `sentry` skill reserves for error-tracking s
 A ticket in Plane, what its UI and API v1 call an issue's successor. The `plane` skill addresses one by `PROJ-123` identifier, UUID, or browser URL, and never uses the deprecated `/issues/` API paths.
 _Avoid_: issue, ticket, task (when the Plane record is meant)
 
+**Project** (PostHog):
+The numeric container the `posthog` skill queries, the ID in every PostHog UI URL after `/project/`. Distinct from a **Plane project**, which the `plane` skill addresses by identifier (`WEB`), name, or UUID.
+_Avoid_: team, environment, workspace (which is Plane's outer container, not PostHog's)
+
+**Issue** (error tracking):
+A group of similar `$exception` events. The `posthog` skill reads them out of PostHog error tracking; the `sentry` skill reads them out of Sentry or GlitchTip. The two systems assign separate IDs to the same crash, so an issue is always qualified by which skill fetched it. Plane's tickets are **work items**, never issues.
+_Avoid_: error, bug, exception (which is one event inside the issue, not the group)
+
+**Write** (PostHog):
+Any `posthog` script that changes PostHog: `update-flag.js`, `update-issue.js`, `annotate.js`. Every write is previewed with `--dry-run` and confirmed by the user before it is sent. Everything else in the skill reads.
+_Avoid_: mutation, update (when the class of operation is meant)
+
 **Relay**:
 One `herdr-relay` run: map the fog → dispatch an implementer → review with `pi` → re-audit. The **orchestrator** never edits files; the **implementer** (`pi`, or `amp` when named) writes the code; the **reviewer** (always a separate `pi` instance) reviews the choices and the implementation.
 _Avoid_: pipeline, handoff, delegation
@@ -58,9 +70,12 @@ _Avoid_: spec, plan, prompt
 - An **Effort** holds one **Task DAG**; `loop-operate` claims ready tasks from it
 - crabbox skills lease and reuse **Boxes**; other skills may run commands on them
 - A **Relay** carries one **Brief** from the orchestrator to the implementer; the reviewer reads both
+- A **Project** (PostHog) holds **Issues** (error tracking), feature flags, insights, and recordings; a **Write** targets one of them
 
 ## Flagged ambiguities
 
 - "plugin" vs "marketplace" — resolved: the **plugin** is `yoliani-skills` (defined in `.claude-plugin/plugin.json`); the **marketplace** is the repo itself (`.claude-plugin/marketplace.json`), which lists that one plugin.
 - "loop" was used for both the design artifact and the act of running it — resolved: the artifact is the **Effort** (with its **Task DAG**); "the loop" refers only to `loop-operate`'s claim–execute–verify cycle.
+- "project" meant two things. Resolved: a **Project** (PostHog) is a numeric analytics container; a Plane project is a ticket container inside a workspace. Qualify it whenever both skills are in play.
+- "issue" meant three things. Resolved: an **Issue** (error tracking) is a PostHog or Sentry exception group, always qualified by source; Plane's records are **work items**.
 - "provider" meant two things — resolved: a **Search provider** is a `native-web-search` upstream; the error-tracking server the `sentry` skill talks to is a **Backend**, never a provider.
