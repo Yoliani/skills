@@ -21,6 +21,7 @@
     "./skills/engineering/plane",
     "./skills/engineering/posthog",
     "./skills/engineering/sentry",
+    "./skills/engineering/sonarqube",
     "./skills/engineering/watching-videos",
     "./skills/engineering/web-browser",
     "./skills/engineering/why",

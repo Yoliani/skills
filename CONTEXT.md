@@ -55,6 +55,14 @@ _Avoid_: error, bug, exception (which is one event inside the issue, not the gro
 Any `posthog` script that changes PostHog: `update-flag.js`, `update-issue.js`, `annotate.js`. Every write is previewed with `--dry-run` and confirmed by the user before it is sent. Everything else in the skill reads.
 _Avoid_: mutation, update (when the class of operation is meant)
 
+**Quality gate** (SonarQube):
+The pass/fail verdict the `sonarqube` skill reads for a project, plus the **conditions** behind it — one metric, comparator, and threshold each. A gate is normally written against the **new code** period rather than the whole project, so a red gate names a `new_*` metric.
+_Avoid_: check, gate status, build status (which is CI's verdict, not SonarQube's)
+
+**Measure**:
+One metric's value for a SonarQube component, read by the `sonarqube` skill. A **project key** addresses the project (the `id=` in a dashboard URL), never a numeric ID, which is what distinguishes it from a **PostHog project**.
+_Avoid_: metric (which is the definition, not the value), stat, KPI
+
 **Relay**:
 One `herdr-relay` run: map the fog → dispatch an implementer → review with `pi` → re-audit. The **orchestrator** never edits files; the **implementer** (`pi`, or `amp` when named) writes the code; the **reviewer** (always a separate `pi` instance) reviews the choices and the implementation.
 _Avoid_: pipeline, handoff, delegation
