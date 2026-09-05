@@ -61,9 +61,9 @@ selection, sizing, sync rules, and profiles — never secrets (those live in use
 config or env vars). Minimal hand-written starting point; adapt per repo:
 
 ```yaml
-provider: <aws|hetzner|gcp|azure|daytona|static|local-container>
+provider: <aws|hetzner|gcp|azure|machine0|daytona|static|local-container>
 target: linux            # linux | macos | windows
-class: standard          # standard | fast | large | beast
+class: standard          # tiny | small | standard | fast | large | beast
 
 lease:
   idleTimeout: 30m
@@ -71,6 +71,7 @@ lease:
 
 sync:
   delete: true
+  # gitOverlay: true     # opt-in git transfer optimization (see notes)
   exclude:
     - node_modules
     - dist
@@ -88,6 +89,18 @@ Notes:
 - Precedence: **flags > env > repo `.crabbox.yaml` > user config > defaults**.
   Inspect the merged result with `crabbox config show`.
 - A `.crabboxignore` at repo root appends to `sync.exclude`.
+- `tiny` and `small` classes exist for smoke checks and small repos; use them
+  instead of `standard` for cheap lanes.
+- `machine0` is a built-in SSH-lease provider with live size/GPU pricing,
+  persistent VMs, explicit suspend/resume, native versioned images, and a
+  tunneled Linux desktop.
+- `sync.gitOverlay: true` (or `CRABBOX_SYNC_GIT_OVERLAY`) is an opt-in,
+  credential-free transfer optimization: eligible Linux SSH boxes fetch the
+  advertised commit themselves and only differing files move, so a clean
+  checkout sends no source payload. It needs `sync.gitSeed: true`,
+  `sync.delete: true`, a clean submodule-free checkout, and an anonymous
+  HTTP(S) origin; anything else (delegated providers, macOS, Windows/WSL2,
+  `sync.include`, private or SSH origins) falls back to ordinary sync.
 - Static SSH host (no cloud account needed):
   ```yaml
   static: { host: my-box.local, user: alice, port: "22", workRoot: /home/alice/crabbox }
@@ -152,7 +165,9 @@ For day-to-day workflows, call the Skill tool with `crabbox-usage`.
   runs it), devcontainers, Nix, or mise/asdf. Don't expect node/python on a fresh
   lease. To *check* what's there before a run, use preflight probes —
   `run.preflightTools` in config or `crabbox run --preflight --preflight-tools
-  python,python3`. Probes only report availability; they never install anything.
+  python,python3`. Opt-in probes include `go`, `cargo`, `cmake`, `uv`,
+  `python`, and `python3` (plus `make` on POSIX/WSL2); `default` keeps the
+  built-ins. Probes only report availability; they never install anything.
 - Per-lease SSH keys are generated locally under
   `<user-config>/crabbox/testboxes/<lease-id>/id_ed25519`; the broker never sees
   private keys, and command I/O streams directly CLI↔box (broker is control
@@ -162,6 +177,7 @@ For day-to-day workflows, call the Skill tool with `crabbox-usage`.
   file sync — keep `**/.env*` excluded.
 - Repo config can select providers, images, and runtime commands: **review a
   `.crabbox.yaml` you didn't write before running crabbox in that repo.**
-- Leases are TTL-bounded, but delegated providers (e.g. Daytona) may have **no
-  auto-stop** — always release boxes (`crabbox stop <slug>`); find stragglers with
-  `crabbox list`.
+- Leases are TTL-bounded, but some delegated providers have **no auto-stop**, so
+  always release boxes (`crabbox stop <slug>`); find stragglers with
+  `crabbox list`. Direct Daytona is no longer one of them: it honors native TTL
+  and idle auto-stop.
