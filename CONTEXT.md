@@ -67,6 +67,10 @@ _Avoid_: metric (which is the definition, not the value), stat, KPI
 One `herdr-relay` run: map the fog → dispatch an implementer → review with `pi` → re-audit. The **orchestrator** never edits files; the **implementer** (`pi`, or `amp` when named) writes the code; the **reviewer** (always a separate `pi` instance) reviews the choices and the implementation.
 _Avoid_: pipeline, handoff, delegation
 
+**Dispatch mechanism**:
+How the `herdr-relay` orchestrator hands out one piece of work: a **Herdr pane** (watchable, persistent, works under any orchestrator), a **subagent** (ephemeral, Claude Code only, for read-only fan-out), or a **dispatched session** (`claude --bg`, independent and long-lived, reports back over `SendMessage`). The implementer and the reviewer are always Herdr panes.
+_Avoid_: worker, runner, channel
+
 **Brief**:
 The single artifact the orchestrator hands the implementer at the end of fog-mapping: what to build, the scope boundary, the constraints found in the code, and the decisions the user made. A question left unanswered in the brief is unmapped fog.
 _Avoid_: spec, plan, prompt
@@ -78,6 +82,7 @@ _Avoid_: spec, plan, prompt
 - An **Effort** holds one **Task DAG**; `loop-operate` claims ready tasks from it
 - crabbox skills lease and reuse **Boxes**; other skills may run commands on them
 - A **Relay** carries one **Brief** from the orchestrator to the implementer; the reviewer reads both
+- A **Relay** routes each piece of work through one **Dispatch mechanism**; whatever it dispatches reports to the orchestrator, never to the user
 - A **Project** (PostHog) holds **Issues** (error tracking), feature flags, insights, and recordings; a **Write** targets one of them
 
 ## Flagged ambiguities
