@@ -67,6 +67,12 @@ on POSIX SSH leases, so `$0` points there, not into the repo. A script that read
 adjacent repo files must be invoked by its synced path instead
 (`crabbox run -- ./ci/check.sh`).
 
+A run can report failure even when your command succeeded: if automatic cleanup
+fails, the run itself fails while the command's original exit code is preserved,
+and the cleanup/timing errors are reported separately with a recovery session to
+finish the release. Check *which* stage failed before reading a non-zero run as
+"the tests failed".
+
 ## Warm box loop (repeated runs)
 
 ```sh
@@ -200,17 +206,22 @@ delegated providers may not auto-stop at all and forgotten boxes keep billing.
   implement it. Everywhere else, reach a remote port with `crabbox tunnel`
   (loopback-only) or `crabbox egress`; providers without a native port bridge
   fail clearly rather than guessing.
-- **Daytona** is an SSH-lease provider (Linux only) whose `run` is delegated to
-  the toolbox APIs, so it rejects `--script`/`--script-stdin`, `--checksum`,
-  `--full-resync`, `--fresh-pr`, `--env-helper`, `--capture-*`, `--download`,
-  `--artifact-glob`/`--require-artifact`, `--emit-proof`, and `--stop-after`.
-  `--class`/`--type` are rejected too: size the sandbox through its snapshot.
+- **Daytona** is an SSH-lease provider (Linux only) whose *ordinary* `run` is
+  delegated to the toolbox APIs, so it rejects `--checksum`, `--full-resync`,
+  `--fresh-pr`, `--env-helper`, `--capture-*`, `--download`,
+  `--artifact-glob`/`--require-artifact`, `--emit-proof`, `--stop-after`, and
+  `--actions-runner`. `--script`/`--script-stdin` *are* supported: they
+  explicitly select the SSH runner with its normal sync, capture, and exit-code
+  behavior, so the snapshot needs SSH, Git, rsync, tar, and Bash plus access to
+  the Daytona SSH gateway. Direct `--class` selects or validates snapshot
+  sizing; `--type` stays unsupported and brokered mode still rejects `--class`.
   There is no desktop, `code`, or Actions-hydration surface. Direct Linux
   leases *do* support filesystem `checkpoint` create/fork/delete (stop the
   source with `--no-reboot=false`; memory is not captured). Exec deadlines now
   follow the caller's context up to Daytona's maximum, so the old ~60s
   per-command cutoff is gone; sync and exec refresh activity every 30s so quiet
   commands do not trip idle auto-stop. Use `--sync-only` to pre-upload before a
-  later run. Scaffolding recipe:
+  later run; large-sync guardrails still apply, and `--force-sync-large` is
+  honored for intentional large syncs. Scaffolding recipe:
   https://github.com/AI-Builder-Club/skills/tree/main/skills/crabbox-setup
 - Secrets reach the box only via `env.allow` (encrypted SSH), never file sync.

@@ -88,6 +88,9 @@ env:
 Notes:
 - Precedence: **flags > env > repo `.crabbox.yaml` > user config > defaults**.
   Inspect the merged result with `crabbox config show`.
+- An **empty** YAML list for `env.allow`, `results.junit`, or `run.preflightTools`
+  *clears* the inherited value; omit the key to inherit it. Profile allowlists
+  stay additive.
 - A `.crabboxignore` at repo root appends to `sync.exclude`.
 - `tiny` and `small` classes exist for smoke checks and small repos; use them
   instead of `standard` for cheap lanes.
@@ -163,7 +166,10 @@ For day-to-day workflows, call the Skill tool with `crabbox-usage`.
   nothing else. Language runtimes, Docker, and dependencies are *project* setup:
   use Actions hydration (`crabbox init` scaffolds the workflow; `crabbox prewarm`
   runs it), devcontainers, Nix, or mise/asdf. Don't expect node/python on a fresh
-  lease. To *check* what's there before a run, use preflight probes —
+  Linux lease. Two carve-outs: managed WSL2 installs a Node/npm baseline and runs
+  workloads as the non-root `crabbox` user with passwordless sudo, and managed
+  macOS installs a pinned Node when Node/npm are missing. To *check* what's there
+  before a run, use preflight probes —
   `run.preflightTools` in config or `crabbox run --preflight --preflight-tools
   python,python3`. Opt-in probes include `go`, `cargo`, `cmake`, `uv`,
   `python`, and `python3` (plus `make` on POSIX/WSL2); `default` keeps the
