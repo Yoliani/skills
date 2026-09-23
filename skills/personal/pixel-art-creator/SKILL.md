@@ -1,6 +1,6 @@
 ---
 name: pixel-art-creator
-description: Create new pixel art sprites from scratch with canvas creation, layer management, and basic drawing primitives. Use when the user wants to create a sprite, draw pixel art, make a new canvas, start a new image, begin a new project, or mentions pixel dimensions like "64x64", "32x32 sprite", "128 by 128", "16 pixel icon". Trigger on "create", "new", "make", "draw", "sprite", "canvas", "image", "icon", "tile", "character", "background", dimensions (WxH), "from scratch", "blank canvas", "empty sprite", "Game Boy", "NES", "retro", color mode mentions ("RGB", "indexed", "grayscale"). Also use for drawing basic shapes like "circle", "rectangle", "line", "pixel", "fill", "outline".
+description: Create new pixel art sprites from scratch in Aseprite, covering canvas creation, color mode, layers, palettes, and basic drawing primitives (pixels, lines, shapes, fills). Use when the user wants to start a new sprite, icon, tile, or character, often at a stated size like 32x32 or in a retro style (NES, Game Boy).
 allowed-tools: Read, Bash, mcp__aseprite__create_canvas, mcp__aseprite__add_layer, mcp__aseprite__delete_layer, mcp__aseprite__get_sprite_info, mcp__aseprite__draw_pixels, mcp__aseprite__draw_line, mcp__aseprite__draw_rectangle, mcp__aseprite__draw_circle, mcp__aseprite__draw_contour, mcp__aseprite__fill_area, mcp__aseprite__set_palette, mcp__aseprite__get_palette
 ---
 

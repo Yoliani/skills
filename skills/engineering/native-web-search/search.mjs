@@ -356,7 +356,7 @@ function pickFastModel(provider, requestedModel, piAi) {
 	const preferredIds =
 		provider === "openai-codex"
 			? ["gpt-5.4-mini", "gpt-5.3-codex-spark", "gpt-5.1", "gpt-5.1-codex-mini"]
-			: ["claude-haiku-4-5", "claude-3-5-haiku-latest", "claude-3-5-haiku-20241022"];
+			: ["claude-haiku-4-5"];
 
 	for (const id of preferredIds) {
 		const found = models.find((m) => m.id === id);
@@ -553,7 +553,7 @@ function buildAnthropicHeaders(apiKey) {
 		return {
 			authorization: `Bearer ${apiKey}`,
 			"anthropic-version": "2023-06-01",
-			"anthropic-beta": "claude-code-20250219,oauth-2025-04-20,web-search-2025-03-05",
+			"anthropic-beta": "claude-code-20250219,oauth-2025-04-20",
 			"content-type": "application/json",
 			accept: "application/json",
 			"x-app": "cli",
@@ -563,7 +563,6 @@ function buildAnthropicHeaders(apiKey) {
 	return {
 		"x-api-key": apiKey,
 		"anthropic-version": "2023-06-01",
-		"anthropic-beta": "web-search-2025-03-05",
 		"content-type": "application/json",
 		accept: "application/json",
 	};
@@ -573,7 +572,6 @@ async function runAnthropicSearch({ model, apiKey, query, purpose, timeoutMs }) 
 	const body = {
 		model,
 		max_tokens: 1800,
-		temperature: 0,
 		system: buildSystemPrompt(),
 		tools: [{ type: "web_search_20250305", name: "web_search", max_uses: 5 }],
 		messages: [{ role: "user", content: buildUserPrompt(query, purpose) }],
