@@ -1,6 +1,6 @@
 ---
 name: pixel-art-exporter
-description: Export sprites to PNG, GIF, or spritesheet formats with JSON metadata for game engines. Use when the user wants to "export", "save", "output", "render", "generate", "create file", mentions file formats like "PNG", "GIF", "animated GIF", "spritesheet", "sprite sheet", "texture atlas", "tile sheet", or game engine integration with "Unity", "Godot", "Phaser", "Unreal", "GameMaker". Trigger on layout terms ("horizontal", "vertical", "grid", "packed", "strip"), scaling ("2x", "4x", "upscale", "pixel-perfect"), file operations ("save as", "export to", "output to"), metadata formats ("JSON", "XML", "metadata", "atlas data"), and delivery terms ("for web", "for game", "for Twitter", "for itch.io", "optimized").
+description: Export Aseprite sprites to PNG, animated GIF, or spritesheets with JSON metadata, at pixel-perfect scales. Use when the user wants to save or deliver pixel art as files, pick a spritesheet layout, or prepare assets for a game engine (Unity, Godot, Phaser) or the web.
 allowed-tools: Read, Bash, mcp__aseprite__export_png, mcp__aseprite__export_gif, mcp__aseprite__export_spritesheet, mcp__aseprite__get_sprite_info
 ---
 
@@ -317,104 +317,7 @@ Before exporting, read the matching section of `examples.md` for a worked export
 
 ## Game Engine Integration
 
-### Unity Integration
-
-**Export Settings:**
-- Layout: "grid"
-- Include JSON: true
-- Padding: 1-2 pixels (prevents bleeding)
-- Scale: 1x (Unity handles scaling)
-
-**Import Steps:**
-1. Import spritesheet.png into Assets
-2. Set Texture Type to "Sprite (2D and UI)"
-3. Set Sprite Mode to "Multiple"
-4. Open Sprite Editor and use JSON coordinates to slice
-5. Create Animator Controller with sprite animation
-
-**Code Example:**
-```csharp
-SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-renderer.sprite = sprites[frameIndex];
-```
-
-### Godot Integration
-
-**Export Settings:**
-- Layout: "horizontal" or "grid"
-- Include JSON: true
-- Scale: 1x
-- Padding: 0-1 pixels
-
-**Import Steps:**
-1. Import spritesheet.png to project
-2. Create AnimatedSprite node
-3. Create SpriteFrames resource
-4. Add frames from spritesheet
-5. Use JSON durations to set FPS
-
-**Code Example:**
-```gdscript
-$AnimatedSprite.play("run")
-$AnimatedSprite.speed_scale = 1.0
-```
-
-### Phaser Integration
-
-**Export Settings:**
-- Layout: "packed" or "horizontal"
-- Include JSON: true (Texture Packer format)
-- Scale: 1x or 2x depending on game resolution
-
-**Import Steps:**
-1. Place spritesheet.png and .json in assets
-2. Load as atlas in preload()
-3. Create sprite with atlas key
-4. Create animations from frame names
-
-**Code Example:**
-```javascript
-this.load.atlas('player', 'spritesheet.png', 'spritesheet.json');
-
-this.anims.create({
-  key: 'run',
-  frames: this.anims.generateFrameNames('player', {
-    prefix: 'frame_',
-    suffix: '.png',
-    start: 0,
-    end: 7
-  }),
-  frameRate: 10,
-  repeat: -1
-});
-```
-
-### Generic/Custom Engine
-
-**Export Settings:**
-- Layout: Based on engine capabilities
-- Include JSON: true
-- Provide simple frame array format
-
-**JSON Structure:**
-```json
-{
-  "frames": [
-    {"x": 0, "y": 0, "w": 32, "h": 32, "duration": 100}
-  ],
-  "meta": {
-    "frameWidth": 32,
-    "frameHeight": 32,
-    "frameCount": 8
-  }
-}
-```
-
-**Integration Pattern:**
-1. Load PNG texture
-2. Parse JSON to get frame rectangles
-3. Create sub-textures/sprites from coordinates
-4. Use duration for animation timing
+Per-engine export settings and import steps (Unity, Godot, Phaser, generic) live in `export-formats.md`, under "Game Engine Integration Examples".
 
 ## Technical Details
 

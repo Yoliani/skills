@@ -48,7 +48,7 @@ Route by what the work needs, not by what is fanciest:
 
 Never make a subagent or a dispatched session the implementer or the reviewer. A subagent dies with its report, so it cannot take round two, and neither one shows the user a transcript they can read.
 
-Pass model and effort to match the work: `--model claude-fable-5-1|claude-opus-5|claude-sonnet-5 --effort low|medium|high` for `claude --bg`, the `model` parameter for a subagent.
+Pass model and effort to match the work: `--model <model id> --effort <level>` for `claude --bg`, the `model` parameter for a subagent.
 
 ### Dispatched sessions in the relay's workspace
 
