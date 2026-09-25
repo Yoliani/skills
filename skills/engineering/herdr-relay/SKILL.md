@@ -44,7 +44,7 @@ Route by what the work needs, not by what is fanciest:
 | The implementer or the reviewer | **Herdr pane** | The user watches it, you reuse the same instance across rounds, and it works under any orchestrator |
 | Read-only fan-out while you map the fog: trace call sites, find the tests, survey conventions | **Subagent** (`Agent` tool) | Ephemeral, parallelizable, and the file dumps stay out of your context |
 | Genuinely independent work running alongside the relay, where you want status rather than a transcript | **Dispatched session** (`claude --bg`) | Outlives the relay and reports back over `SendMessage` |
-| Anything a workflow would cover | Do not | Only if the user asks for a workflow by name |
+| Anything a workflow (a single agent working the task alone) would cover | Do not | Only if the user asks for a workflow by name |
 
 Never make a subagent or a dispatched session the implementer or the reviewer. A subagent dies with its report, so it cannot take round two, and neither one shows the user a transcript they can read.
 

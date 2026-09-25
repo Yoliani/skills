@@ -165,10 +165,9 @@ git log -1 --format=%B | ./scripts/comment-work-item.js WEB-123 -f -
   is reported with the seconds left until reset.
 - **`--assignee` and `--label` replace, not append.** On update, pass every value
   you want to keep.
-- **Work items, not issues.** Plane renamed issues to work items and the
-  `/issues/` API paths are deprecated (support ends 31 March 2026); these scripts
-  use `/work-items/` throughout. Web UI URLs still say `/issues/`, and are parsed
-  as such.
+- **Work items, not issues.** Plane renamed issues to work items and deprecated
+  the `/issues/` API paths; these scripts use `/work-items/` throughout. Web UI
+  URLs still say `/issues/`, and are parsed as such.
 - **Members may be invisible.** Listing project members needs a wider token scope
   than reading work items. When it's denied, assignees print as UUIDs instead of
   names rather than failing the command.
