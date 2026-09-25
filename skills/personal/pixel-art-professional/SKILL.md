@@ -1,7 +1,7 @@
 ---
 name: pixel-art-professional
 description: Refine existing pixel art in Aseprite with advanced techniques such as dithering, palette reduction and optimization, shading and lighting, antialiasing, color ramps and hue shifting. Use when the user wants to polish, add depth to, or recolor a sprite, or names one of these techniques or a retro palette (NES, Game Boy, C64, PICO-8).
-allowed-tools: Read, Bash, mcp__aseprite__get_sprite_info, mcp__aseprite__draw_pixels, mcp__aseprite__set_palette, mcp__aseprite__get_palette, mcp__aseprite__quantize_palette, mcp__aseprite__apply_auto_shading, mcp__aseprite__draw_with_dither, mcp__aseprite__add_layer, mcp__aseprite__flatten_layers
+allowed-tools: Read, mcp__aseprite__get_sprite_info, mcp__aseprite__draw_pixels, mcp__aseprite__set_palette, mcp__aseprite__get_palette, mcp__aseprite__quantize_palette, mcp__aseprite__apply_auto_shading, mcp__aseprite__draw_with_dither, mcp__aseprite__add_layer, mcp__aseprite__flatten_layers
 ---
 
 # Pixel Art Professional

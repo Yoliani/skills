@@ -12,7 +12,7 @@ For work a human reviews after the fact, a decision trail lets them reconstruct 
 
 A single TSV file, one row per decision. TSV because GitHub renders it as a sortable table, `column -s$'\t' -t` and spreadsheets read it, and a row appends with one command. Cells stay single-line. Evidence is a pointer, not prose.
 
-Copy `references/decision-log-template.tsv` (the header row) to start a clean log. Columns:
+The columns, in order:
 
 - **ts.** ISO8601 timestamp. The timeline axis.
 - **phase.** The phase or workstream.
@@ -77,10 +77,6 @@ Every reply for a run that produced a trail ends with an "Attention" section. Le
 
 Read top to bottom, follow the evidence pointers, spot-check. GitHub renders a committed TSV as a table; `column -s$'\t' -t decisions.tsv` renders it in a terminal. A row whose evidence doesn't resolve, or whose result is unverified, is the audit catching a gap.
 
-## Composing this skill
-
-Other skills route their audit trail here instead of inventing one. Reference it by name and let it own the format; don't restate the columns.
-
 ## Based on
 
-Adapted from [`show-me-your-work`](https://github.com/cursor/plugins/blob/main/pstack/skills/show-me-your-work/SKILL.md) in Cursor's pstack plugin. Changes from the original: the transcript-audit and cross-model-review sections are generalized to be harness-agnostic (with Claude Code's transcript location and Agent-tool model override kept as examples), the description is trimmed to a human-facing one-liner since the skill is user-invoked, and the `encode-lessons-in-structure` cross-reference is inlined.
+Adapted from [`show-me-your-work`](https://github.com/cursor/plugins/blob/main/pstack/skills/show-me-your-work/SKILL.md) in Cursor's pstack plugin. Changes from the original: the transcript-audit and cross-model-review sections are generalized to be harness-agnostic (with Claude Code's transcript location and Agent-tool model override kept as examples), the description is trimmed to a human-facing one-liner since the skill is user-invoked, the `encode-lessons-in-structure` cross-reference is inlined, and the composing section and header template are dropped (a user-invoked skill can't be reached by other skills, and `scripts/log.sh` writes the header itself).
