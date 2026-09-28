@@ -1,7 +1,7 @@
 ---
 name: pixel-art-animator
 description: Create and manage sprite animations in Aseprite, covering frames, frame durations, animation tags, loops, and linked cels. Use when the user wants a sprite to move or animate (walk, run, idle, attack, jump, bob cycles), or wants to add, duplicate, retime, tag, or optimize frames.
-allowed-tools: Read, Bash, mcp__aseprite__add_frame, mcp__aseprite__delete_frame, mcp__aseprite__duplicate_frame, mcp__aseprite__set_frame_duration, mcp__aseprite__create_tag, mcp__aseprite__delete_tag, mcp__aseprite__link_cel, mcp__aseprite__get_sprite_info, mcp__aseprite__draw_pixels, mcp__aseprite__draw_line, mcp__aseprite__draw_rectangle, mcp__aseprite__draw_circle
+allowed-tools: Read, mcp__aseprite__add_frame, mcp__aseprite__delete_frame, mcp__aseprite__duplicate_frame, mcp__aseprite__set_frame_duration, mcp__aseprite__create_tag, mcp__aseprite__delete_tag, mcp__aseprite__link_cel, mcp__aseprite__get_sprite_info, mcp__aseprite__draw_pixels, mcp__aseprite__draw_line, mcp__aseprite__draw_rectangle, mcp__aseprite__draw_circle
 ---
 
 # Pixel Art Animator

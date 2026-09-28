@@ -1,7 +1,7 @@
 ---
 name: pixel-art-exporter
 description: Export Aseprite sprites to PNG, animated GIF, or spritesheets with JSON metadata, at pixel-perfect scales. Use when the user wants to save or deliver pixel art as files, pick a spritesheet layout, or prepare assets for a game engine (Unity, Godot, Phaser) or the web.
-allowed-tools: Read, Bash, mcp__aseprite__export_png, mcp__aseprite__export_gif, mcp__aseprite__export_spritesheet, mcp__aseprite__get_sprite_info
+allowed-tools: Read, mcp__aseprite__export_png, mcp__aseprite__export_gif, mcp__aseprite__export_spritesheet, mcp__aseprite__get_sprite_info
 ---
 
 # Pixel Art Exporter
@@ -69,7 +69,7 @@ Before exporting, read the matching section of `examples.md` for a worked export
    ```
    Use mcp__aseprite__export_png:
    - file_path: Absolute path (e.g., "/path/to/output/sprite.png")
-   - frame_number: Specific frame (0-indexed) or omit for current frame
+   - frame_number: Specific frame (1-based); 0 or omitted exports every frame
    - layer: Specific layer name or omit for merged output
    - scale: Scaling factor (1, 2, 4, etc.) - default is 1
    ```
@@ -445,7 +445,7 @@ Per-engine export settings and import steps (Unity, Godot, Phaser, generic) live
 1. mcp__aseprite__get_sprite_info (verify frame exists)
 2. mcp__aseprite__export_png:
    - file_path: "/output/frame.png"
-   - frame_number: 0 (or user-specified)
+   - frame_number: 1 (or user-specified)
    - scale: 1 (or user-specified)
 3. Confirm export with dimensions
 ```
@@ -558,7 +558,7 @@ Per-engine export settings and import steps (Unity, Godot, Phaser, generic) live
 
 **Solution:**
 ```
-1. Verify directory exists (create if needed using Bash)
+1. Missing directories are fine: the export tools create them
 2. Check write permissions
 3. Use absolute paths, not relative
 4. Suggest valid path if user provides invalid one

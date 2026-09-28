@@ -5,7 +5,6 @@ description: >
   intended tone. Use when the user says "unslop", asks to make text sound less
   AI-generated or more human, or before delivering user-facing prose (docs,
   READMEs, posts, emails, PR descriptions).
-user_invocable: true
 ---
 
 # unslop — cut AI tells, restore voice

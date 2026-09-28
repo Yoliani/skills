@@ -1,6 +1,6 @@
 {
   "name": "yoliani-skills",
-  "version": "0.8.2",
+  "version": "0.9.0",
   "description": "Edgardo Yoliani's agent skills: remote execution with crabbox and more.",
   "author": {
     "name": "Edgardo Yoliani"
@@ -24,7 +24,6 @@
     "./skills/engineering/sonarqube",
     "./skills/engineering/watching-videos",
     "./skills/engineering/web-browser",
-    "./skills/engineering/why",
     "./skills/productivity/show-me-your-work"
   ]
 }

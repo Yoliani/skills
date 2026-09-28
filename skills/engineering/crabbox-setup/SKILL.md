@@ -7,7 +7,6 @@ description: >
   and scaffolding a repo-local .crabbox.yaml (provider, sync excludes, env allowlist).
   Use when the user says "set up crabbox", "install crabbox", "configure crabbox for
   this repo", or when crabbox-usage fails because crabbox is missing or unauthenticated.
-user_invocable: true
 ---
 
 # crabbox-setup — install & configure crabbox

@@ -7,7 +7,6 @@ description: >
   "warm up a box", "ssh into the box", "pull artifacts off the box", or any
   crabbox command question. If crabbox is missing or unauthenticated, call the
   Skill tool with `crabbox-setup` first.
-user_invocable: true
 ---
 
 # crabbox-usage — run work on remote boxes

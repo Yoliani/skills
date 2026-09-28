@@ -13,9 +13,9 @@ work=$(mktemp -d /tmp/watch-video.XXXXXX)
 
 ## 1. Acquire the file
 
-- **Local path** — use it directly.
-- **Direct file URL** (ends in `.mp4`, `.mov`, `.webm`, …) — `curl -L -o "$work/video.mp4" <url>`.
-- **Page link** (YouTube, Loom, Vimeo, Drive, …) — `yt-dlp -f "bv*[height<=1080]+ba/b" -o "$work/video.%(ext)s" <url>`. If yt-dlp is missing, `brew install yt-dlp` (or `pipx install yt-dlp`) first.
+- **Local path**: use it directly, `vid=<path>`.
+- **Direct file URL** (ends in `.mp4`, `.mov`, `.webm`, …): `vid="$work/video.mp4"; curl -L -o "$vid" <url>`.
+- **Page link** (YouTube, Loom, Vimeo, Drive, …): `yt-dlp -f "bv*[height<=1080]+ba/b" -o "$work/video.%(ext)s" <url>`, then `vid=$(ls "$work"/video.*)`. If yt-dlp is missing, `brew install yt-dlp` (or `pipx install yt-dlp`) first.
 
 Done when `ffprobe` reads the file:
 
