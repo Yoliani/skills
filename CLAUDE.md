@@ -11,4 +11,4 @@ The Claude Code plugin ships the skills listed in `.claude-plugin/plugin.json`'s
 
 `CONTEXT.md` is the shared language for this repo. When a term is defined there, use it — in skill descriptions, commit messages, and conversation — instead of a synonym. When you introduce a new recurring concept (or catch two names for the same thing), add or resolve it in `CONTEXT.md`.
 
-To (re)link every skill into the local harness skill directories (`~/.claude/skills`, `~/.agents/skills`), run `scripts/link-skills.sh`. Each entry is a symlink into this repo, so a `git pull` keeps installed skills current; re-run the script after adding, removing, or renaming a skill. `scripts/list-skills.sh` lists every skill in the repo.
+To (re)link every skill into the local harness skill directories (`~/.claude/skills`, every `~/.claude-*/skills`, `~/.agents/skills`), run `scripts/link-skills.sh`. Each entry is a symlink into this repo, so a `git pull` keeps installed skills current; re-run the script after adding, removing, or renaming a skill. `scripts/list-skills.sh` lists every skill in the repo.
