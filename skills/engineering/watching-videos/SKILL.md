@@ -60,11 +60,19 @@ whisper-cli -m "$model" -f "$work/audio.wav" -osrt -of "$work/transcript"
 
 If `whisper-cli` is missing, `brew install whisper-cpp` first. The `ggml-base.bin` model is multilingual; for English-only audio `ggml-base.en.bin` is slightly more accurate. The `.srt` output carries timestamps — keep them, they are the join key to the frames.
 
-Done when `transcript.srt` exists and reads as coherent speech (or the video is confirmed silent).
+**More than one speaker** (meetings, interviews, calls): label who says each line. The script downloads its models on the first run, needs `uv`, and takes about a minute per 5 minutes of audio:
+
+```bash
+uv run <skill-dir>/scripts/diarize.py "$work/audio.wav" "$work/transcript.srt" [num_speakers]
+```
+
+It writes `transcript.speakers.srt`, with each line prefixed `[SPEAKER_NN]`. Leave `num_speakers` out to auto-detect. Pass it only when you are sure of the count, for example from the participant tiles in a meeting recording. A label with only a line or two is usually a clustering artifact; attribute those lines from context. Labels follow whisper's segments, so a quick interjection inside a long segment takes the main speaker's label. Map labels to real names from on-screen name tags, from who is introduced, or from who the active-speaker highlight is on.
+
+Done when `transcript.srt` exists and reads as coherent speech (or the video is confirmed silent), and, for more than one speaker, `transcript.speakers.srt` exists too.
 
 ## 4. Build the timeline and answer
 
-Merge frames and transcript into one chronological account: at each timestamp, what is on screen and what is being said. This timeline — not the raw artifacts — is what you reason from and what you report.
+Merge frames and transcript into one chronological account: at each timestamp, what is on screen, what is being said, and who says it. This timeline — not the raw artifacts — is what you reason from and what you report.
 
 Branch on what the user asked for:
 
