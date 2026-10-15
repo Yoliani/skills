@@ -36,7 +36,7 @@ Which server the `sentry` skill talks to — `sentry` (Sentry SaaS or self-hoste
 _Avoid_: provider, instance, server (when the backend kind is meant)
 
 **Search provider**:
-Which upstream the `native-web-search` skill queries — `openai-codex`, `anthropic`, `exa`, or `nan`. The first two return a written summary from a fast model with native web search; `exa` and `nan` return ranked results over plain HTTP. Selected with `--provider`.
+Which upstream the `native-web-search` skill queries: `openai-codex`, `anthropic`, or `exa`. The first two return a written summary from a fast model with native web search; `exa` returns ranked results over plain HTTP. Selected with `--provider`.
 _Avoid_: engine, backend (which the `sentry` skill reserves for error-tracking servers)
 
 **Work item**:

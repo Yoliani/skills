@@ -92,18 +92,17 @@ function parseArgs(argv) {
 
 function usage() {
 	return `Usage:
-  node search.mjs "<query>" [--purpose "<why>"] [--provider openai-codex|anthropic|exa|nan] [--model <id>] [--results <n>] [--json]
+  node search.mjs "<query>" [--purpose "<why>"] [--provider openai-codex|anthropic|exa] [--model <id>] [--results <n>] [--json]
 
 Providers:
   openai-codex, anthropic   fast model with native web search; returns a written summary (needs pi credentials)
   exa                       Exa /search; returns ranked results + highlights (needs EXA_API_KEY)
-  nan                       NaN /v1/search; returns ranked results + snippets (needs NAN_API_KEY)
 
 Examples:
   node search.mjs "latest python release" --purpose "update dependency notes"
   node search.mjs "HTTP/3 browser support 2026" --provider openai-codex
   node search.mjs "vite 7 breaking changes" --provider exa --results 8
-  node search.mjs "go release notes" --provider nan --fresh pw --json`;
+  node search.mjs "go release notes" --provider exa --fresh pw --json`;
 }
 
 function readJson(path, fallback = {}) {
@@ -150,17 +149,15 @@ function normalizeProvider(provider) {
 	if (p.includes("anthropic") || p.includes("claude")) return "anthropic";
 	if (p.includes("codex") || p === "openai" || p.startsWith("openai")) return "openai-codex";
 	if (p === "exa") return "exa";
-	if (p === "nan") return "nan";
 	return undefined;
 }
 
-function isSearchApiProvider(provider) {
-	return provider === "exa" || provider === "nan";
-}
-
 function pickProvider(argProvider, settings, auth) {
-	const forced = normalizeProvider(argProvider);
-	if (forced) return forced;
+	if (argProvider) {
+		const forced = normalizeProvider(argProvider);
+		if (!forced) throw new Error(`Unknown provider '${argProvider}'. Pass --provider openai-codex|anthropic|exa`);
+		return forced;
+	}
 
 	const fromSettings = normalizeProvider(settings?.defaultProvider);
 	if (fromSettings) return fromSettings;
@@ -169,9 +166,8 @@ function pickProvider(argProvider, settings, auth) {
 	if (auth?.anthropic) return "anthropic";
 
 	if (process.env.EXA_API_KEY) return "exa";
-	if (process.env.NAN_API_KEY) return "nan";
 
-	throw new Error("Could not determine provider. Pass --provider openai-codex|anthropic|exa|nan");
+	throw new Error("Could not determine provider. Pass --provider openai-codex|anthropic|exa");
 }
 
 function decodeJwtAccountId(jwt) {
@@ -343,7 +339,7 @@ function pickFastModel(provider, requestedModel, piAi) {
 	const models = typeof piAi.getModels === "function" ? piAi.getModels(provider) : [];
 	if (!Array.isArray(models) || models.length === 0) {
 		if (requestedModel) return { id: requestedModel, baseUrl: undefined };
-		if (provider === "openai-codex") return { id: "gpt-5.4-mini", baseUrl: "https://chatgpt.com/backend-api" };
+		if (provider === "openai-codex") return { id: "gpt-6-luna", baseUrl: "https://chatgpt.com/backend-api" };
 		return { id: "claude-haiku-4-5", baseUrl: "https://api.anthropic.com" };
 	}
 
@@ -355,7 +351,7 @@ function pickFastModel(provider, requestedModel, piAi) {
 
 	const preferredIds =
 		provider === "openai-codex"
-			? ["gpt-5.4-mini", "gpt-5.3-codex-spark", "gpt-5.1", "gpt-5.1-codex-mini"]
+			? ["gpt-6-luna", "gpt-5.6-luna"]
 			: ["claude-haiku-4-5"];
 
 	for (const id of preferredIds) {
@@ -623,7 +619,7 @@ function abortSignal(timeoutMs) {
 	return typeof AbortSignal !== "undefined" && AbortSignal.timeout ? AbortSignal.timeout(timeoutMs) : undefined;
 }
 
-// Exa filters by publication date, not by the pd/pw/pm/py shorthand NaN uses.
+// Exa filters by publication date, so map the pd/pw/pm/py shorthand to a start date.
 function freshnessToStartDate(fresh) {
 	if (!fresh) return undefined;
 	const days = { pd: 1, pw: 7, pm: 31, py: 365 }[String(fresh).toLowerCase()];
@@ -684,58 +680,12 @@ async function runExaSearch({ query, purpose, numResults, fresh, includeText, ti
 	return { results, meta: { searchType: parsed.searchType, costDollars: parsed.costDollars?.total } };
 }
 
-async function runNanSearch({ query, numResults, fresh, includeText, timeoutMs }) {
-	const apiKey = requireEnvKey("NAN_API_KEY", "nan");
-
-	const body = {
-		query,
-		count: Math.min(20, numResults),
-		fetch_content: Boolean(includeText),
-	};
-	if (fresh) body.freshness = fresh;
-
-	const res = await fetch("https://api.nan.builders/v1/search", {
-		method: "POST",
-		headers: {
-			authorization: `Bearer ${apiKey}`,
-			"content-type": "application/json",
-			accept: "application/json",
-		},
-		body: JSON.stringify(body),
-		signal: abortSignal(timeoutMs),
-	});
-
-	const payload = await res.text();
-	if (!res.ok) {
-		const retryAfter = res.headers.get("retry-after");
-		const hint = retryAfter ? ` (retry after ${retryAfter}s)` : "";
-		throw new Error(`NaN request failed (${res.status})${hint}: ${payload}`);
-	}
-
-	let parsed;
-	try {
-		parsed = JSON.parse(payload);
-	} catch {
-		throw new Error("NaN returned non-JSON response");
-	}
-
-	const results = (parsed.results || []).map((r) => ({
-		title: r.title,
-		url: r.url,
-		excerpts: r.snippet ? [r.snippet] : [],
-		text: r.content,
-		source: r.source,
-	}));
-
-	return { results, meta: { cached: parsed.cached } };
-}
-
 function formatResults(results) {
 	if (results.length === 0) return "No results.";
 	return results
 		.map((r, i) => {
 			const lines = [`${i + 1}. ${r.title || r.url}`, `   ${r.url}`];
-			const stamp = [r.publishedDate, r.author, r.source].filter(Boolean).join(" · ");
+			const stamp = [r.publishedDate, r.author].filter(Boolean).join(" · ");
 			if (stamp) lines.push(`   ${stamp}`);
 			for (const excerpt of r.excerpts || []) {
 				lines.push(`   > ${String(excerpt).replace(/\s+/g, " ").trim()}`);
@@ -761,25 +711,16 @@ async function main() {
 
 	const provider = pickProvider(args.provider, settings, auth);
 
-	if (isSearchApiProvider(provider)) {
-		const { results, meta } =
-			provider === "exa"
-				? await runExaSearch({
-						query: args.query,
-						purpose: args.purpose,
-						numResults: args.results,
-						fresh: args.fresh,
-						includeText: args.text,
-						timeoutMs: args.timeoutMs,
-						model: args.model,
-				  })
-				: await runNanSearch({
-						query: args.query,
-						numResults: args.results,
-						fresh: args.fresh,
-						includeText: args.text,
-						timeoutMs: args.timeoutMs,
-				  });
+	if (provider === "exa") {
+		const { results, meta } = await runExaSearch({
+			query: args.query,
+			purpose: args.purpose,
+			numResults: args.results,
+			fresh: args.fresh,
+			includeText: args.text,
+			timeoutMs: args.timeoutMs,
+			model: args.model,
+		});
 
 		if (args.json) {
 			console.log(JSON.stringify({ provider, query: args.query, purpose: args.purpose, ...meta, results }, null, 2));
