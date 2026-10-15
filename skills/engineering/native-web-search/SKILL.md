@@ -25,17 +25,17 @@ Examples:
 ```bash
 node search.mjs "latest python release" --purpose "update dependency notes"
 node search.mjs "vite 7 breaking changes" --provider exa --results 8
-node search.mjs "go release notes" --provider nan --fresh pw
+node search.mjs "go release notes" --provider exa --fresh pw
 ```
 
 Flags:
 
-- `--purpose <why>` — what the results are for; steers the summary and Exa's highlight selection
-- `--provider openai-codex|anthropic|exa|nan`
-- `--model <id>` — model id for the LLM providers; Exa search `type` (`auto`, `fast`, `deep`, …) for `exa`
-- `--results <n>` — result count for `exa` / `nan` (NaN clamps to 20)
-- `--fresh pd|pw|pm|py|<date>` — recency filter for `exa` / `nan`
-- `--text` — also pull the readable page text, not just excerpts (slower)
+- `--purpose <why>`: what the results are for; steers the summary and Exa's highlight selection
+- `--provider openai-codex|anthropic|exa`
+- `--model <id>`: model id for the LLM providers; Exa search `type` (`auto`, `fast`, `deep`, …) for `exa`
+- `--results <n>`: result count for `exa`
+- `--fresh pd|pw|pm|py|<date>`: recency filter for `exa`
+- `--text`: also pull the readable page text, not just excerpts (slower)
 - `--timeout <ms>`
 - `--json`
 
@@ -46,19 +46,18 @@ Flags:
 | `openai-codex` | written summary from a fast model with native web search | `pi` OAuth/API creds in `~/.pi/agent/auth.json` |
 | `anthropic` | written summary from a fast model with native web search | `pi` OAuth/API creds in `~/.pi/agent/auth.json` |
 | `exa` | ranked results with purpose-scored highlights | `EXA_API_KEY` |
-| `nan` | ranked results with snippets, via NaN's proxied search | `NAN_API_KEY` |
 
-Provider selection: `--provider`, then `defaultProvider` from `~/.pi/agent/settings.json`, then whichever `pi` credentials exist, then `EXA_API_KEY`, then `NAN_API_KEY`.
+Provider selection: `--provider`, then `defaultProvider` from `~/.pi/agent/settings.json` when it names one of these providers, then whichever `pi` credentials exist, then `EXA_API_KEY`.
 
-**The two LLM providers require [`pi`](https://github.com/mitsuhiko/pi-mono) to be installed and authenticated** — they load `@earendil-works/pi-ai` and read `~/.pi/agent/auth.json`. Without `pi`, use `exa` or `nan`; those are plain HTTP calls with no dependency beyond Node.
+**The two LLM providers require [`pi`](https://github.com/earendil-works/pi) to be installed and authenticated.** They load `@earendil-works/pi-ai` and read `~/.pi/agent/auth.json`. Without `pi`, use `exa`: a plain HTTP call with no dependency beyond Node.
+
+### openai-codex
+
+Searches use the ChatGPT plan's Codex usage limit. When Codex returns HTTP 400 `model is not supported when using Codex with a ChatGPT account` (the default model was retired) or HTTP 429 `usage_limit_reached` (the limit is used up until `resets_at`), rerun the search with `--provider exa`.
 
 ### exa
 
 `POST https://api.exa.ai/search`. Highlights are scored against `--purpose`, so the excerpts answer why you searched rather than just matching the query. `--fresh` maps to `startPublishedDate`. Key from https://dashboard.exa.ai/api-keys. Billed per request; `--json` reports `costDollars`.
-
-### nan
-
-`POST https://api.nan.builders/v1/search`. NaN proxies upstream search providers, so your key never reaches them. Limits are per key and separate from NaN's model endpoints: 20 req/min, 3 concurrent, 500 searches/day. Identical queries within ~15 minutes come from cache (`cached: true` in `--json`) and still count against quota. `--purpose` does not affect NaN results — it only labels the output.
 
 ## Output expectations
 
@@ -68,15 +67,14 @@ The LLM providers instruct the model to:
 - include full canonical URLs (`https://...`) for each key finding
 - highlight disagreements between sources
 
-`exa` and `nan` return ranked results instead: numbered title, full URL, metadata, and excerpts.
+`exa` returns ranked results instead: numbered title, full URL, metadata, and excerpts.
 
 ## Notes
 
 - No npm install is required.
 - If module resolution fails for the LLM providers, set `PI_AI_MODULE_PATH` to `@earendil-works/pi-ai`'s `dist/index.js` path.
-- If OAuth helper resolution fails, set `PI_AI_OAUTH_MODULE_PATH` to `@earendil-works/pi-ai`'s `dist/oauth.js` path.
-- For OAuth providers, the script can fall back to a still-valid cached `access` token from `~/.pi/agent/auth.json`.
+- OAuth tokens come from `~/.pi/agent/auth.json`. The script refreshes an expired token only when pi-ai exports `getOAuthApiKey` (set `PI_AI_OAUTH_MODULE_PATH` to its `dist/oauth.js` if the script cannot find it). Otherwise it uses the cached `access` token until that expires; after that, use `exa` until `pi` refreshes the token.
 
 ## Source
 
-Adapted from [mitsuhiko/agent-stuff](https://github.com/mitsuhiko/agent-stuff/tree/main/skills/native-web-search); the `exa` and `nan` providers are additions.
+Adapted from [mitsuhiko/agent-stuff](https://github.com/mitsuhiko/agent-stuff/tree/main/skills/native-web-search); the `exa` provider is an addition.
